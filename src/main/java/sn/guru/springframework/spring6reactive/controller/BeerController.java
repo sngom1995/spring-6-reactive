@@ -3,6 +3,7 @@ package sn.guru.springframework.spring6reactive.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -28,7 +29,7 @@ public class BeerController {
     }
 
     @PostMapping(BEER_V1_PATH)
-    Mono<ResponseEntity<Void>> saveBeer(@RequestBody BeerDTO beerDTO) {
+    Mono<ResponseEntity<Void>> saveBeer(@Validated @RequestBody BeerDTO beerDTO) {
         return beerService.saveBeer(beerDTO)
                 .map(savedBeer -> ResponseEntity.created(
                         UriComponentsBuilder
@@ -43,7 +44,8 @@ public class BeerController {
     }
 
     @PutMapping(BEER_V1_PATH + "/{id}")
-    Mono<ResponseEntity<Void>> updateBeer(@PathVariable Integer id, @RequestBody BeerDTO beerDTO) {
+    Mono<ResponseEntity<Void>> updateBeer(@PathVariable Integer id,
+                                          @Validated @RequestBody BeerDTO beerDTO) {
         beerService.updateBeer(id, beerDTO).subscribe();
         return Mono.just(ResponseEntity.ok().build());
     }
@@ -55,7 +57,7 @@ public class BeerController {
 
     @PatchMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> patchExistingBeer(@PathVariable Integer beerId,
-                                                 @RequestBody BeerDTO beerDTO){
+                                                 @Validated @RequestBody BeerDTO beerDTO){
         return beerService.patchBeer(beerId, beerDTO)
                 .map(updatedDto -> ResponseEntity.ok().build());
     }
