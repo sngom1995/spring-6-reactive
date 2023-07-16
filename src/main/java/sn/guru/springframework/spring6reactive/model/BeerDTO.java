@@ -24,7 +24,6 @@ public class BeerDTO {
     private String beerStyle;
     @Size(max =25)
     private String upc;
-    @Size(max = 25)
     private BigDecimal price;
     private Integer quantityOnHand;
 
