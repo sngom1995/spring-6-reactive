@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 public class BeerController {
 
     public static final String BEER_V1_PATH = "/api/v2/beer";
+    public static final String BEER_PATH_ID = BEER_V1_PATH + "/{beerId}";
+
 
     private final BeerService beerService;
 
@@ -41,7 +43,20 @@ public class BeerController {
     }
 
     @PutMapping(BEER_V1_PATH + "/{id}")
-    Mono<BeerDTO> updateBeer(@PathVariable Integer id, @RequestBody BeerDTO beerDTO) {
-        return beerService.updateBeer(id, beerDTO);
+    Mono<ResponseEntity<Void>> updateBeer(@PathVariable Integer id, @RequestBody BeerDTO beerDTO) {
+        beerService.updateBeer(id, beerDTO).subscribe();
+        return Mono.just(ResponseEntity.ok().build());
+    }
+
+    @DeleteMapping(BEER_V1_PATH + "/{id}")
+    Mono<Void> deleteBeerById(@PathVariable Integer id) {
+        return beerService.deleteBeerById(id);
+    }
+
+    @PatchMapping(BEER_PATH_ID)
+    Mono<ResponseEntity<Void>> patchExistingBeer(@PathVariable Integer beerId,
+                                                 @RequestBody BeerDTO beerDTO){
+        return beerService.patchBeer(beerId, beerDTO)
+                .map(updatedDto -> ResponseEntity.ok().build());
     }
 }

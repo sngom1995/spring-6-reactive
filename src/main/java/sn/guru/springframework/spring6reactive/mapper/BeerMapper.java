@@ -9,7 +9,7 @@ import sn.guru.springframework.spring6reactive.model.BeerDTO;
 @Component
 public class BeerMapper {
 
-    public BeerDTO BeerToBeerDTO(Beer beer) {
+    public BeerDTO beerToBeerDTO(Beer beer) {
         BeerDTO beerDTO = new BeerDTO();
         BeanUtils.copyProperties(beer, beerDTO);
         return beerDTO;
