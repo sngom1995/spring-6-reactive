@@ -8,3 +8,10 @@ create table IF NOT EXISTS beer(
     created_date TIMESTAMP ,
     last_modified_date TIMESTAMP
 );
+
+create table IF NOT EXISTS customer(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(255) ,
+    created_date TIMESTAMP ,
+    last_modified_date TIMESTAMP
+);

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import sn.guru.springframework.spring6reactive.domain.Beer;
+import sn.guru.springframework.spring6reactive.domain.Customer;
 import sn.guru.springframework.spring6reactive.repository.BeerReactiveRepository;
+import sn.guru.springframework.spring6reactive.repository.CustomerRepository;
 
 import java.math.BigDecimal;
 
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class BootsTrapData implements CommandLineRunner {
     private final BeerReactiveRepository beerReactiveRepository;
+    private final CustomerRepository customerRepository;
     @Override
     public void run(String... args) throws Exception {
         loadBeer();
@@ -20,6 +23,26 @@ public class BootsTrapData implements CommandLineRunner {
             System.out.println("Loaded Beers: " + count);
         });
 
+        loadCustomer();
+        customerRepository.count().subscribe( count -> {
+            System.out.println("Loaded Customers: " + count);
+        });
+    }
+
+    private void loadCustomer() throws Exception {
+        customerRepository.count().subscribe( count -> {
+            if(count == 0) {
+                customerRepository.save(Customer.builder()
+                        .customerName("Guru")
+                        .build()).subscribe();
+                customerRepository.save(Customer.builder()
+                        .customerName("Guru2")
+                        .build()).subscribe();
+                customerRepository.save(Customer.builder()
+                        .customerName("Guru3")
+                        .build()).subscribe();
+            }
+        });
     }
 
     private  void loadBeer() throws Exception {
